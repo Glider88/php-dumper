@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+args="$@"
+bin/sh "vendor/phpunit/phpunit/phpunit $args"

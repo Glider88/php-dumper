@@ -1,0 +1,10 @@
+services:
+  php-cli:
+    image: php-dumper/php-cli
+    container_name: php-dumper-cli
+    build: .docker/php-cli
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - .docker/php-cli/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - .:/usr/src/app

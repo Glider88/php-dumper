@@ -1,0 +1,32 @@
+{
+  "name": "glider88/php-dumper",
+  "version": "0.0.1",
+  "description": "Dump php values as valid php values",
+  "keywords": ["PHP", "Dumper"],
+  "homepage": "https://github.com/Glider88/php-dumper",
+  "type": "library",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sakharov Pavel",
+      "email": "s.p.alekseevich@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Glider88\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Glider88\\": "tests/"
+    }
+  }
+}
