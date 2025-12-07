@@ -1,6 +1,5 @@
 {
   "name": "glider88/php-dumper",
-  "version": "0.0.1",
   "description": "Dump php values as valid php values",
   "keywords": ["PHP", "Dumper"],
   "homepage": "https://github.com/Glider88/php-dumper",
