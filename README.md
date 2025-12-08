@@ -8,10 +8,10 @@ composer require glider88/php-dumper
 
 Start:
 ```shell
-bin/reup # first run
+bin/re  # first run
 ```
 ```shell
-bin/up   # start app
+bin/up  # start app
 ```
 ```shell
 bin/unit # run tests
