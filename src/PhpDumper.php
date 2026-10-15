@@ -189,13 +189,14 @@ class PhpDumper
         };
 
         return match (true) {
-            $arg === ''     => "''",
-            $arg === null   => 'null',
-            $arg === true   => 'true',
-            $arg === false  => 'false',
-            is_string($arg) => $fixedStr($arg),
-            is_scalar($arg) => (string) $arg,
-            is_resource($arg) => "'RESOURCE'",
+            $arg === ''               => "''",
+            $arg === null             => 'null',
+            $arg === true             => 'true',
+            $arg === false            => 'false',
+            $arg instanceof \UnitEnum => '\\' . $arg::class . '::' . $arg->name,
+            is_string($arg)           => $fixedStr($arg),
+            is_scalar($arg)           => (string) $arg,
+            is_resource($arg)         => "'RESOURCE'",
             default => throw new \InvalidArgumentException(
                 "try find scalar, but its not scalar: " . var_export($arg, true)
             ),
@@ -204,7 +205,7 @@ class PhpDumper
 
     private static function is_flat($args): bool
     {
-        if ($args === null || is_scalar($args)) {
+        if ($args === null || is_scalar($args) || $args instanceof \UnitEnum) {
             return true;
         }
 
@@ -227,7 +228,7 @@ class PhpDumper
 
     private static function has_object($args): bool
     {
-        if (is_object($args)) {
+        if (is_object($args) && !($args instanceof \UnitEnum)) {
             return true;
         }
 
@@ -322,6 +323,10 @@ class PhpDumper
         }
 
         if (is_object($arg)) {
+            if ($arg instanceof \UnitEnum) {
+                return '\\' . $arg::class . '::' . $arg->name;
+            }
+
             if ($isSimple) {
                 $p2v = self::p2v($arg);
                 $cls = $arg::class;
