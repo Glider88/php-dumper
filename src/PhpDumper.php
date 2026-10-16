@@ -193,7 +193,7 @@ class PhpDumper
             $arg === null             => 'null',
             $arg === true             => 'true',
             $arg === false            => 'false',
-            $arg instanceof \UnitEnum => '\\' . $arg::class . '::' . $arg->name,
+            $arg instanceof \UnitEnum => $arg::class . '::' . $arg->name,
             is_string($arg)           => $fixedStr($arg),
             is_scalar($arg)           => (string) $arg,
             is_resource($arg)         => "'RESOURCE'",
@@ -324,7 +324,7 @@ class PhpDumper
 
         if (is_object($arg)) {
             if ($arg instanceof \UnitEnum) {
-                return '\\' . $arg::class . '::' . $arg->name;
+                return $arg::class . '::' . $arg->name;
             }
 
             if ($isSimple) {

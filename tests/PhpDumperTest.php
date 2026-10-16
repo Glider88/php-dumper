@@ -25,7 +25,7 @@ class PhpDumperTest extends TestCase
             'array' => [['a' => 'b', [], 'b' => 'c']],
             'object' => [$c],
             'nesting' => [$a],
-            'enum' => Gender::Male,
+            'enum' => [Gender::Male],
         ];
     }
 
