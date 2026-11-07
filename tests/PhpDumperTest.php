@@ -14,6 +14,9 @@ class PhpDumperTest extends TestCase
         $b = new B();
         $c = new C();
         $a->arr = [$b, $c];
+        $s = new \stdClass();
+        $s->a = 'hi';
+        $s->b = true;
 
         return [
             'int' => [7],
@@ -26,6 +29,9 @@ class PhpDumperTest extends TestCase
             'object' => [$c],
             'nesting' => [$a],
             'enum' => [Gender::Male],
+            'date_time' => [new \DateTime('2030-01-02 12:00:00', new \DateTimeZone('Europe/Moscow'))],
+            'date_time_imm' => [new \DateTimeImmutable('2030-01-02 12:00:00', new \DateTimeZone('Europe/Moscow'))],
+            'std_class' => [$s],
         ];
     }
 
@@ -34,7 +40,11 @@ class PhpDumperTest extends TestCase
     {
         $use = 'use Glider88\PhpDumper;';
         eval($use . '$actual = ' . PhpDumper::val($expected));
-        $this->assertSame(serialize($expected), serialize($actual));
+        if ($expected instanceof \DateTimeInterface) {
+            $this->assertSame($expected->getTimestamp(), $actual->getTimestamp());
+        } else {
+            $this->assertSame(serialize($expected), serialize($actual));
+        }
     }
 }
 

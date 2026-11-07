@@ -136,6 +136,10 @@ class PhpDumper
     /** @param array<string, mixed> $propertyToValue */
     public static function object(string $classname, array $propertyToValue): object
     {
+        if ($classname === 'stdClass') {
+            return (object) $propertyToValue;
+        }
+
         $reflector = new \ReflectionClass($classname);
 
         /** @var object $instance */
@@ -193,7 +197,6 @@ class PhpDumper
             $arg === null             => 'null',
             $arg === true             => 'true',
             $arg === false            => 'false',
-            $arg instanceof \UnitEnum => $arg::class . '::' . $arg->name,
             is_string($arg)           => $fixedStr($arg),
             is_scalar($arg)           => (string) $arg,
             is_resource($arg)         => "'RESOURCE'",
@@ -205,7 +208,7 @@ class PhpDumper
 
     private static function is_flat($args): bool
     {
-        if ($args === null || is_scalar($args) || $args instanceof \UnitEnum) {
+        if ($args === null || is_scalar($args)) {
             return true;
         }
 
@@ -228,7 +231,7 @@ class PhpDumper
 
     private static function has_object($args): bool
     {
-        if (is_object($args) && !($args instanceof \UnitEnum)) {
+        if (is_object($args)) {
             return true;
         }
 
@@ -327,6 +330,10 @@ class PhpDumper
                 return $arg::class . '::' . $arg->name;
             }
 
+            if ($arg instanceof \DateTimeInterface) {
+                return "new \DateTime('" . $arg->format(\DateTime::W3C) . "')";
+            }
+
             if ($isSimple) {
                 $p2v = self::p2v($arg);
                 $cls = $arg::class;
@@ -375,6 +382,10 @@ class PhpDumper
 
     private static function p2v(object $object): array
     {
+        if ($object instanceof \stdClass) {
+            return (array) $object;
+        }
+
         $cls = $object::class;
         $reflector = new \ReflectionClass($cls);
 
